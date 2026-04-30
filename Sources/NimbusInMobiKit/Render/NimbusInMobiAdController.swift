@@ -187,7 +187,7 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
     }
     
     func interstitial(_ interstitial: IMInterstitial, rewardActionCompletedWithRewards rewards: [String : Any]) {
-        sendNimbusEvent(.completed)
+        sendNimbusEvent(.rewardEarned)
     }
     
     func interstitialDidDismiss(_ interstitial: IMInterstitial) {
