@@ -9,6 +9,7 @@ import UIKit
 import NimbusKit
 import InMobiSDK
 
+// Internal: Do NOT implement delegate conformance as separate extensions as the methods will not be found in runtime when built as a static library
 final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate, @MainActor IMInterstitialDelegate, @MainActor IMNativeDelegate {
     // MARK: - Properties
     
@@ -202,5 +203,3 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
         sendNimbusError(.inmobi(stage: .render, detail: error.localizedDescription))
     }
 }
-
-// Internal: Do NOT implement delegate conformance as separate extensions as the methods won't not be found in runtime when built as a static library
