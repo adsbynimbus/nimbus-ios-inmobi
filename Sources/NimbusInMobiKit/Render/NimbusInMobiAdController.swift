@@ -86,7 +86,6 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
         }
     }
     
-    @MainActor
     func presentIfNeeded() {
         guard started, adState == .ready else { return }
         
@@ -114,9 +113,7 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
     }
     
     override func onStart() {
-        Task { @MainActor in
-            presentIfNeeded()
-        }
+        presentIfNeeded()
     }
     
     override func onDestroy() {
@@ -126,11 +123,9 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
     }
     
     private func setReady() {
-        Task { @MainActor in
-            adState = .ready
-            sendNimbusEvent(.loaded)
-            presentIfNeeded()
-        }
+        adState = .ready
+        sendNimbusEvent(.loaded)
+        presentIfNeeded()
     }
     
     // MARK: - Banner Delegate
