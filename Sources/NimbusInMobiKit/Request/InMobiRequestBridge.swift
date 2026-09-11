@@ -9,21 +9,18 @@ import InMobiSDK
 import NimbusKit
 
 protocol InMobiRequestBridgeType: Sendable {
-    /// Not sure if IMSdk is thread safe
-    @MainActor var bidToken: String { get throws }
+    var bidToken: String { get throws }
 }
 
 final class InMobiRequestBridge: InMobiRequestBridgeType {
-    public init() {}
+    init() {}
     
-    @MainActor static let extras: [String: Any] = [
+    static let extras: [String: String] = [
         "tp": "c_nimbus",
         "tp-ver": Nimbus.version
     ]
     
-    /// Not sure if IMSdk is thread safe
-    @MainActor
-    public var bidToken: String {
+    var bidToken: String {
         get throws {
             guard let token = IMSdk.getTokenWithExtras(Self.extras, andKeywords: nil) else {
                 throw NimbusError.inmobi(stage: .request, detail: "Couldn't fetch bid token")
@@ -33,9 +30,8 @@ final class InMobiRequestBridge: InMobiRequestBridgeType {
         }
     }
     
-    @MainActor
     @inlinable
-    public static func set(coppa: Bool) {
+    static func set(coppa: Bool) {
         IMSdk.setIsAgeRestricted(coppa)
     }
 }
