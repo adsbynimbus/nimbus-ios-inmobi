@@ -20,7 +20,7 @@ final class NimbusInMobiRequestInterceptor {
 
 extension NimbusInMobiRequestInterceptor: NimbusRequest.Interceptor {
     public func modifyRequest(request: NimbusRequest) async throws -> [NimbusRequest.Delta] {
-        let bidToken = try await bridge.bidToken
+        let bidToken = try bridge.bidToken
         try Task.checkCancellation()
         
         return [.init(target: .user, key: "inmobi_buyeruid", value: bidToken)]
