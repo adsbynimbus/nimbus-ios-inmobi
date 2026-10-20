@@ -11,14 +11,14 @@ var package = Package(
            targets: ["NimbusInMobiKit"])
     ],
     dependencies: [
-        .package(url: "https://github.com/adsbynimbus/swift-package-inmobi", from: "10.8.6"),
+        .package(url: "https://github.com/InMobi/InMobiSDK-Swift-Package", from: "11.3.0"),
     ],
     targets: [
         .target(
             name: "NimbusInMobiKit",
             dependencies: [
                 .product(name: "NimbusKit", package: "nimbus-ios-sdk"),
-                .product(name: "InMobiSDK", package: "swift-package-inmobi")
+                .product(name: "InMobiSDK", package: "InMobiSDK-Swift-Package")
             ]
         ),
         .testTarget(
