@@ -62,28 +62,48 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
         
         switch adRenderType {
         case .banner:
-            let adSize = response.bid.size
-            
-            let bannerAd = IMBanner(
-                frame: CGRect(x: 0, y: 0, width: adSize.width, height: adSize.height),
-                placementId: placementId,
-                delegate: self
-            )
-            bannerAd.extras = InMobiRequestBridge.extras
+            let bannerAd = buildBannerAd(placementId: placementId)
             bannerAd.load(markupData)
             bannerAd.shouldAutoRefresh(false)
-            self.bannerAd = bannerAd
         case .native:
-            nativeAd = IMNative(placementId: placementId, delegate: self)
-            nativeAd?.extras = InMobiRequestBridge.extras
-            nativeAd?.load(markupData)
+            buildNativeAd(placementId: placementId).load(markupData)
         case .interstitial, .rewarded:
-            interstitialAd = IMInterstitial(placementId: placementId, delegate: self)
-            interstitialAd?.extras = InMobiRequestBridge.extras
-            interstitialAd?.load(markupData)
+            buildInterstitialAd(placementId: placementId).load(markupData)
         @unknown default:
             sendNimbusError(.inmobi(reason: .unsupported, stage: .render, detail: "Unsupported adRenderType: \(adRenderType.rawValue)"))
         }
+    }
+    
+    // MARK: - Builders (create the InMobi object and wire its delegate, without loading)
+    
+    @discardableResult
+    func buildBannerAd(placementId: Int64) -> IMBanner {
+        let adSize = response.bid.size
+        
+        let bannerAd = IMBanner(
+            frame: CGRect(x: 0, y: 0, width: adSize.width, height: adSize.height),
+            placementId: placementId,
+            delegate: self
+        )
+        bannerAd.extras = InMobiRequestBridge.extras
+        self.bannerAd = bannerAd
+        return bannerAd
+    }
+    
+    @discardableResult
+    func buildNativeAd(placementId: Int64) -> IMNative {
+        let nativeAd = IMNative(placementId: placementId, delegate: self)
+        nativeAd.extras = InMobiRequestBridge.extras
+        self.nativeAd = nativeAd
+        return nativeAd
+    }
+    
+    @discardableResult
+    func buildInterstitialAd(placementId: Int64) -> IMInterstitial {
+        let interstitialAd = IMInterstitial(placementId: placementId, delegate: self)
+        interstitialAd.extras = InMobiRequestBridge.extras
+        self.interstitialAd = interstitialAd
+        return interstitialAd
     }
     
     func presentIfNeeded() {
@@ -164,6 +184,10 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
         sendNimbusEvent(.clicked)
     }
     
+    func nativeDidFinishPlayingMedia(_ native: IMNative) {
+        sendNimbusEvent(.completed)
+    }
+    
     func native(_ native: IMNative, didFailToLoadWithError error: IMRequestStatus) {
         sendNimbusError(.inmobi(stage: .render, detail: error.localizedDescription))
     }
@@ -188,6 +212,10 @@ final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate,
     
     func interstitialDidDismiss(_ interstitial: IMInterstitial) {
         destroy()
+    }
+    
+    func interstitial(_ interstitial: IMInterstitial, didFailToLoadWithError error: IMRequestStatus) {
+        sendNimbusError(.inmobi(stage: .render, detail: error.localizedDescription))
     }
     
     func interstitial(_ interstitial: IMInterstitial, didFailToReceiveWithError error: any Error) {
