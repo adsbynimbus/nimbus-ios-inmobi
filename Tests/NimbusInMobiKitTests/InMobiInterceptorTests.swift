@@ -1,5 +1,5 @@
 //
-//  NimbusInMobiInterceptorTests.swift
+//  InMobiInterceptorTests.swift
 //  Nimbus
 //  Created on 8/4/25
 //  Copyright © 2025 Nimbus Advertising Solutions Inc. All rights reserved.
@@ -11,9 +11,9 @@ import InMobiSDK
 import Testing
 
 @Suite("InMobi request interceptor tests")
-struct NimbusInMobiInterceptorTests {
+struct InMobiInterceptorTests {
     
-    let interceptor = NimbusInMobiRequestInterceptor(bridge: MockInMobiRequestBridge())
+    let interceptor = InMobiRequestInterceptor(bridge: MockInMobiRequestBridge())
     
     @Test func bidTokenAndRenderInfoGetsSet() async throws {
         let info = try await NimbusRequest(from: Nimbus.bannerAd(position: "test", size: .banner).adRequest!.request)
@@ -26,7 +26,7 @@ struct NimbusInMobiInterceptorTests {
     }
     
     @Test func inmobiBidTokenGetsInsertedIntoRequest() async throws {
-        var request = try await Nimbus.rewardedAd(position: "test").adRequest!.request
+        var request = await Nimbus.rewardedAd(position: "test").adRequest!.request
         request.interceptors = [interceptor]
         
         try await request.modifyRequestWithExtras(

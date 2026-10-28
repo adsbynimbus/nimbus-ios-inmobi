@@ -1,5 +1,5 @@
 //
-//  NimbusInMobiAdController.swift
+//  InMobiAdController.swift
 //  Nimbus
 //  Created on 7/31/25
 //  Copyright © 2025 Nimbus Advertising Solutions Inc. All rights reserved.
@@ -10,7 +10,10 @@ import NimbusKit
 import InMobiSDK
 
 // Internal: Do NOT implement delegate conformance as separate extensions as the methods will not be found in runtime when built as a static library
-final class NimbusInMobiAdController: AdController, @MainActor IMBannerDelegate, @MainActor IMInterstitialDelegate, @MainActor IMNativeDelegate {
+final class InMobiAdController: AdController,
+                                @MainActor IMBannerDelegate,
+                                @MainActor IMInterstitialDelegate,
+                                @MainActor IMNativeDelegate {
     // MARK: - Properties
     
     var bannerAd: IMBanner?

@@ -1,5 +1,5 @@
 //
-//  NimbusInMobiRequestInterceptor.swift
+//  InMobiRequestInterceptor.swift
 //  Nimbus
 //  Created on 7/31/25
 //  Copyright © 2025 Nimbus Advertising Solutions Inc. All rights reserved.
@@ -8,7 +8,7 @@
 import Foundation
 import NimbusKit
 
-final class NimbusInMobiRequestInterceptor {
+final class InMobiRequestInterceptor {
     
     /// Bridge that communicates with InMobi SDK
     private let bridge: InMobiRequestBridgeType
@@ -18,7 +18,7 @@ final class NimbusInMobiRequestInterceptor {
     }
 }
 
-extension NimbusInMobiRequestInterceptor: NimbusRequest.Interceptor {
+extension InMobiRequestInterceptor: NimbusRequest.Interceptor {
     public func modifyRequest(request: NimbusRequest) async throws -> [NimbusRequest.Delta] {
         let bidToken = try bridge.bidToken
         try Task.checkCancellation()

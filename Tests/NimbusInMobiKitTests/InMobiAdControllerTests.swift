@@ -271,7 +271,7 @@ struct InMobiAdControllerTests {
     // MARK: - Load validation
 
     @Test func loadFailsWithNonNumericPlacementId() {
-        let adController = NimbusInMobiAdController(
+        let adController = InMobiAdController(
             response: .init(id: "", bid: .init(mtype: .static, adm: markup, price: 0, ext: .init(omp: .init(buyer: "inmobisdk", buyerPlacementId: "not-a-number")))),
             isBlocking: false,
             isRewarded: false,
@@ -307,7 +307,7 @@ struct InMobiAdControllerTests {
 
     enum Format { case banner, native, interstitial, rewarded }
 
-    private func makeAdController(_ format: Format) -> (NimbusInMobiAdController, MockDelegate) {
+    private func makeAdController(_ format: Format) -> (InMobiAdController, MockDelegate) {
         let response: NimbusResponse = switch format {
         case .banner, .interstitial:
             .init(id: "", bid: .init(mtype: .static, adm: markup, price: 0, ext: .init(omp: .init(buyer: "inmobisdk", buyerPlacementId: String(placementId)))))
@@ -317,7 +317,7 @@ struct InMobiAdControllerTests {
             .init(id: "", bid: .init(mtype: .video, adm: markup, price: 0, ext: .init(omp: .init(buyer: "inmobisdk", buyerPlacementId: String(placementId)))))
         }
 
-        let adController = NimbusInMobiAdController(
+        let adController = InMobiAdController(
             response: response,
             isBlocking: format == .interstitial || format == .rewarded,
             isRewarded: format == .rewarded,

@@ -29,7 +29,7 @@ public struct InMobiExtension: NimbusRequestExtension, NimbusRenderExtension {
     public var network: String { "inmobisdk" }
     
     @_documentation(visibility: internal)
-    public var controllerType: AdController.Type { NimbusInMobiAdController.self }
+    public var controllerType: AdController.Type { InMobiAdController.self }
     
     /// Creates an InMobi extension.
     ///
@@ -42,7 +42,7 @@ public struct InMobiExtension: NimbusRequestExtension, NimbusRenderExtension {
     /// }
     /// ```
     public init(accountId: String? = nil) {
-        self.interceptor = NimbusInMobiRequestInterceptor()
+        self.interceptor = InMobiRequestInterceptor()
         
         guard let accountId else {
             Nimbus.Log.lifecycle.debug("Skipping InMobi SDK initialization, accountId was not provided")
