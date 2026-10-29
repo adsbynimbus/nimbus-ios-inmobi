@@ -18,5 +18,5 @@ Pod::Spec.new do |spec|
     }
 
     spec.dependency 'NimbusSDK/NimbusKit', '~> 3'
-    spec.dependency 'InMobiSDK', '~> 10.8'
+    spec.dependency 'InMobiSDK', '~> 11.3'
 end
